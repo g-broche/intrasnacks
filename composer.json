@@ -1,0 +1,12 @@
+{
+    "name": "naelyan/intrasnacks",
+    "autoload": {
+        "psr-4": {
+            "src\\": "src/",
+            "core\\": "core/"
+        }
+    },
+    "require": {
+        "twig/twig": "^3.5"
+    }
+}

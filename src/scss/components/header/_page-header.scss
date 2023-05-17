@@ -1,0 +1,22 @@
+@use '../../abstract/' as *;
+
+.page-header {
+    position: relative;
+    width: 100%;
+    height: $header-height;
+    background-color: $color-background-banner;
+
+    &__nav {
+        width: 100%;
+        padding: 0 $padding-page-X;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        gap: $gap-medium;
+
+        a:last-child {
+            margin-left: auto;
+        }
+    }
+}

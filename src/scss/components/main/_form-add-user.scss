@@ -1,0 +1,77 @@
+@use '../../abstract/' as *;
+
+.form-add-user {
+    width: 100%;
+    height: fit-content;
+    background-color: $color-content-primary;
+    font-size: $font-medium;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    header {
+
+        text-align: center;
+        font-size: $font-large;
+
+    }
+
+    main {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        gap: $gap-small;
+
+        .form-field-wrapper {
+            width: fit-content;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+
+            gap: $gap-small;
+
+            .form-group {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 50px;
+
+                input {
+                    width: 300px;
+                    text-align: center;
+                }
+
+                input[type="number"],
+                input.monetary {
+                    width: 100px;
+                }
+            }
+        }
+
+        fieldset {
+            width: fit-content;
+            display: flex;
+            flex-direction: column;
+
+            gap: 10px;
+
+            .form-radio-group {
+                display: flex;
+                gap: $gap-small
+            }
+        }
+    }
+
+    footer {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+
+        button {
+            width: fit-content;
+            align-self: flex-end;
+        }
+    }
+}

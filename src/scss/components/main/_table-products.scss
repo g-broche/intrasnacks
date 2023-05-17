@@ -1,0 +1,66 @@
+@use '../../abstract/' as *;
+
+.table-products {
+    width: 100%;
+    border: 2px solid black;
+    border-collapse: collapse;
+
+    tbody {
+        tr:nth-child(odd) {
+            background-color: $color-content-primary;
+        }
+
+        tr:first-child {
+            background-color: $color-content-header;
+            border-bottom: 2px solid black;
+        }
+
+        tr:nth-child(even) {
+            background-color: $color-content-secondary;
+        }
+
+        tr.unavailable-product {
+            color: salmon;
+        }
+
+        td {
+            border-left: 1px solid black;
+        }
+
+        td:last-child {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: $gap-small;
+
+            a:first-child {
+                margin-right: auto;
+            }
+
+
+            a:nth-child(2) {
+                margin: auto;
+            }
+
+            a:last-child {
+                margin-left: auto;
+            }
+
+            button {
+                height: fit-content;
+                color: black;
+
+            }
+
+        }
+
+    }
+
+    td {
+        height: 50px;
+        min-width: 50px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+}

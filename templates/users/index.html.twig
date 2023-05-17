@@ -1,0 +1,60 @@
+{% extends "base.html.twig" %}
+
+{% block headTitle %}
+	{{pageTitle}}
+{% endblock %}
+
+
+{% block mainHeaderContent %}
+	<nav class='main-header__nav'>
+		<a href="/users/index">
+			<button class="BTN-users">
+				liste utilisateurs
+			</button>
+		</a>
+		<a href="/user/add">
+			<button class="BTN-users">
+				ajouter un utilisateur
+			</button>
+		</a>
+	</nav>
+{% endblock %}
+
+{% block mainDisplay %}
+	<table class="table-users">
+		<tbody>
+			<tr>
+				<td>Id</td>
+				<td>Nom</td>
+				<td>Prénom</td>
+				<td>Email</td>
+				<td>Téléphone</td>
+				<td>Solde</td>
+				<td>Admin permission</td>
+				<td>Action</td>
+			</tr>
+			{% for user in userList %}
+				<tr>
+					<td>{{user['id']}}</td>
+					<td>{{user['last_name']}}</td>
+					<td>{{user['first_name']}}</td>
+					<td>{{user['email']}}</td>
+					<td>{{user['telephone']}}</td>
+					<td>{{user['solde']}}</td>
+					<td>
+						{% if user['is_admin']==1 %}
+							Admin
+						{% else %}
+							Utilisateur
+						{% endif %}
+					</td>
+					<td class="table-users__actions">
+						<a href="/user/edit?id={{user['id']}}">
+							<button class="BTN-edit">modifier</button>
+						</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

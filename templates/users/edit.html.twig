@@ -1,0 +1,53 @@
+{% extends "base.html.twig" %}
+
+{% block headTitle %}
+	{{pageTitle}}
+{% endblock %}
+
+{% block mainHeaderContent %}
+	<nav class='main-header__nav'>
+		<a href="/users/index">
+			<button class="BTN-users">
+				liste utilisateurs
+			</button>
+		</a>
+	</nav>
+
+{% endblock %}
+
+{% block mainDisplay %}
+	<form class="form-update-user" action="/user/increaseSolde" method="post">
+		<header>
+			<h2>Modifier un utilisateur</h2>
+		</header>
+		<main>
+
+			<p>Nom :
+				{{user['last_name']}}</p>
+			<p>Prénom :
+				{{user['first_name']}}</p>
+			<p>Email :
+				{{user['email']}}</p>
+			<p>Téléphone :
+				{{user['telephone']}}</p>
+			<p>Solde actuel :
+				{{user['solde']}}</p>
+
+			<fieldset>
+				<label for="addAmount">Credit à ajouter (max par utilisateur =
+					{{maxCredit}}) :</label>
+				<select name="addAmount" id="addAmount">
+					<option value="5">5</option>
+					<option value="10">10</option>
+					<option value="20">20</option>
+				</select>
+			</fieldset>
+
+		</main>
+		<footer>
+			<button class="BTN-validate" type="submit" name="id" value={{user['id']}}>Modifier</button>
+		</footer>
+
+
+	</form>
+{% endblock %}

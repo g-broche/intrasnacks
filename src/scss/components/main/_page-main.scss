@@ -1,0 +1,54 @@
+@use '../../abstract/' as *;
+
+.page-main {
+    padding: $padding-page-Y $padding-page-X;
+    min-height: 100vh;
+    width: 100vw;
+    background-color: $color-background-main;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $gap-medium;
+
+
+    .main-header {
+        width: 100%;
+
+        &__nav {
+            width: 100%;
+            display: flex;
+            gap: 50px;
+        }
+    }
+
+    .main-content {
+        position: relative;
+        width: 100%;
+        max-width: 1000px;
+        max-height: fit-content;
+        padding: 10px;
+        background-color: $color-content-primary;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 0 20px 0 black;
+    }
+
+    .modal-window {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        height: 400px;
+        width: 600px;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        color: red;
+    }
+
+    .modal-background {
+        position: absolute;
+    }
+
+
+}

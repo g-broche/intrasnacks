@@ -1,0 +1,79 @@
+{% extends "base.html.twig" %}
+
+{% block headTitle %}
+	{{pageTitle}}
+{% endblock %}
+
+{% block mainHeaderContent %}
+	<nav class='main-header__nav'>
+		<a href="/users/index">
+			<button class="BTN-users">
+				liste utilisateurs
+			</button>
+		</a>
+	</nav>
+
+{% endblock %}
+
+{% block mainDisplay %}
+	<form class="form-add-user" action="/user/add-new" method="post">
+		<header>
+			<h2>ajouter un utilisateur</h2>
+		</header>
+		<main>
+			<div class="form-field-wrapper">
+				<div class="form-group">
+					<label for="last-name">Nom</label>
+					<input type="text" id="last-name" name="lastName" required>
+				</div>
+
+				<div class="form-group">
+					<label for="first-name">Prénom</label>
+					<input type="text" id="first-name" name="firstName" required>
+				</div>
+
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input type="email" id="email" name="email" required>
+				</div>
+
+				<div class="form-group">
+					<label for="phone">Téléphone</label>
+					<input type="text" id="phone" name="phone" required>
+				</div>
+
+				<div class="form-group">
+					<label for="password">Mot de passe</label>
+					<input type="password" id="password" name="password" required>
+				</div>
+
+				<div class="form-group">
+					<label for="password-confirm">Confirmer le mot de passe</label>
+					<input type="password" id="password-confirm" required>
+				</div>
+
+				<div class="form-group">
+					<label for="solde">Solde en crédit</label>
+					<input type="number" id="solde" name="solde" required>
+				</div>
+
+				<fieldset>
+					<legend>Cet utilisateur a-t-il des privilèges admin?</legend>
+					<div class="form-radio-group">
+						<input type="radio" id="radio-employe" name="adminStatus" value="0" required>
+						<label for="radio-employe">NON</label>
+					</div>
+					<div class="form-radio-group">
+						<input type="radio" id="radio-admin" name="adminStatus" value="1" required>
+						<label for="radio-admin">OUI</label>
+					</div>
+				</fieldset>
+				<div class="form-field-wrapper"></main>
+
+				<footer>
+					<button class="BTN-validate" type="submit" name="create">Créer</button>
+				</footer>
+
+
+			</form>
+		{% endblock %}

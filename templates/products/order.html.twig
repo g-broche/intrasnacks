@@ -1,0 +1,59 @@
+{% extends "base.html.twig" %}
+
+{% block headTitle %}
+	{{pageTitle}}
+{% endblock %}
+
+{% block mainHeaderContent %}
+	<nav class='main-header__nav'>
+		<button class="BTN-products" id="BTN-addProduct">Ajout produit</button>
+		<a href="/products/resupply">
+			<button class="BTN-products" id="BTN-batchOrder">
+				Commande groupée
+			</button>
+		</a>
+	</nav>
+
+{% endblock %}
+
+{% block mainDisplay %}
+	<form class="form-order-product" action="/product/ordersupply" method="post">
+		<header>
+			<h2>Recommander un produit</h2>
+		</header>
+		<main>
+
+			<p>Nom du produit :
+				{{product['name']}}</p>
+
+			<p>Coût pour employés :
+				{{product['credit_cost']}}
+				credits</p>
+
+			<p>Stock actuel :
+				{{product['stock']}}
+				unité(s)</p>
+
+			<div>
+				<div>
+					<p>Prix fournisseur :
+						{{product['price_restock']}}
+						€</p>
+				</div>
+				<div>
+					<label for="field-order">Quantité :</label>
+					<input id="field-order" name="orderQuantity" type="number" min='1' max='100' size='1' placeholder="0"></div>
+
+				<div>
+					<p>Prix total : 0€</p>
+				</div>
+			</div>
+
+		</main>
+		<footer>
+			<button class="BTN-validate" type="submit" name="orderId" value={{product['id']}}>Commander</button>
+		</footer>
+
+
+	</form>
+{% endblock %}

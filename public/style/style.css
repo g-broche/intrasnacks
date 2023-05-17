@@ -1,0 +1,626 @@
+@charset "UTF-8";
+/*─────────────────────────────────────────────────────────────────────────────────────────────────*/
+/*─────────────────────────────────────────────────────────────────────────────────────────────────*/
+/*─
+/*─                                                                                      RESET
+/*─
+/*─────────────────────────────────────────────────────────────────────────────────────────────────*/
+/*─────────────────────────────────────────────────────────────────────────────────────────────────*/
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: none;
+  /*─ Debug font size on iphone when landscape orientation ─*/
+  -webkit-font-smoothing: subpixel-antialiased;
+  /*─ Debug safari font weight when fixed element on the page ─*/
+  -webkit-font-smoothing: antialiased;
+  /*─ idem : Debug safari font weight when fixed element on the page ─*/
+}
+
+html,
+body,
+nav,
+header,
+footer,
+div,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+img,
+ul,
+li,
+table,
+form,
+label,
+input,
+textarea,
+select,
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  list-style: none;
+}
+
+input,
+textarea,
+select,
+button {
+  display: block;
+  box-sizing: border-box;
+  border-radius: 0;
+  outline: none;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+input:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+
+input[type=submit]:hover,
+button:hover {
+  cursor: pointer;
+}
+
+input::-ms-clear {
+  display: none;
+  /*─ IE11 → remove cross to close ─*/
+}
+
+textarea {
+  overflow: auto;
+  /*─ Hide scroll bar on IE ─*/
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+video,
+svg,
+picture {
+  display: block;
+}
+
+img,
+video {
+  width: 100%;
+  height: auto;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+}
+
+iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.page-header {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  background-color: darkgrey;
+}
+.page-header__nav {
+  width: 100%;
+  padding: 0 10%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 50px;
+}
+.page-header__nav a:last-child {
+  margin-left: auto;
+}
+
+.page-main {
+  padding: 50px 10%;
+  min-height: 100vh;
+  width: 100vw;
+  background-color: beige;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+}
+.page-main .main-header {
+  width: 100%;
+}
+.page-main .main-header__nav {
+  width: 100%;
+  display: flex;
+  gap: 50px;
+}
+.page-main .main-content {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  max-height: fit-content;
+  padding: 10px;
+  background-color: aliceblue;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 20px 0 black;
+}
+.page-main .modal-window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  height: 400px;
+  width: 600px;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  color: red;
+}
+.page-main .modal-background {
+  position: absolute;
+}
+
+.login-window {
+  width: 50%;
+  padding: 50px 30px;
+  background-color: aliceblue;
+  margin: auto;
+  transform: translateY(-150px);
+}
+.login-window__form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+.login-window__form h2 {
+  font-size: 32px;
+}
+.login-window__form div .input-field {
+  margin-top: 10px;
+  width: 300px;
+  padding: 5px 10px;
+  background-color: white;
+}
+.login-window__form .button {
+  align-self: flex-end;
+}
+
+.table-products {
+  width: 100%;
+  border: 2px solid black;
+  border-collapse: collapse;
+}
+.table-products tbody tr:nth-child(odd) {
+  background-color: aliceblue;
+}
+.table-products tbody tr:first-child {
+  background-color: blanchedalmond;
+  border-bottom: 2px solid black;
+}
+.table-products tbody tr:nth-child(even) {
+  background-color: white;
+}
+.table-products tbody tr.unavailable-product {
+  color: salmon;
+}
+.table-products tbody td {
+  border-left: 1px solid black;
+}
+.table-products tbody td:last-child {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+.table-products tbody td:last-child a:first-child {
+  margin-right: auto;
+}
+.table-products tbody td:last-child a:nth-child(2) {
+  margin: auto;
+}
+.table-products tbody td:last-child a:last-child {
+  margin-left: auto;
+}
+.table-products tbody td:last-child button {
+  height: fit-content;
+  color: black;
+}
+.table-products td {
+  height: 50px;
+  min-width: 50px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.form-update-product {
+  width: 100%;
+  height: 100%;
+  background-color: aliceblue;
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.form-update-product header {
+  text-align: center;
+  font-size: 36px;
+}
+.form-update-product main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.form-update-product main div {
+  display: flex;
+  justify-content: space-between;
+}
+.form-update-product main div div {
+  display: flex;
+  gap: 25px;
+}
+.form-update-product main div div input {
+  text-align: center;
+}
+.form-update-product footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+}
+.form-update-product footer button {
+  width: fit-content;
+  align-self: flex-end;
+}
+
+.form-order-product {
+  width: 100%;
+  height: 100%;
+  background-color: aliceblue;
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.form-order-product header {
+  text-align: center;
+  font-size: 36px;
+}
+.form-order-product main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.form-order-product main div {
+  display: flex;
+  justify-content: space-between;
+}
+.form-order-product main div div {
+  display: flex;
+  gap: 25px;
+}
+.form-order-product main div div input {
+  text-align: center;
+}
+.form-order-product footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+}
+.form-order-product footer button {
+  width: fit-content;
+  align-self: flex-end;
+}
+
+.form-add-product {
+  width: 100%;
+  height: 100%;
+  background-color: aliceblue;
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.form-add-product header {
+  text-align: center;
+  font-size: 36px;
+}
+.form-add-product main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 25px;
+}
+.form-add-product main .form-field-wrapper {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+.form-add-product main .form-field-wrapper .form-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+}
+.form-add-product main .form-field-wrapper .form-group input {
+  text-align: center;
+}
+.form-add-product main .form-field-wrapper .form-group input[type=number],
+.form-add-product main .form-field-wrapper .form-group input.monetary {
+  width: 100px;
+}
+.form-add-product main fieldset {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.form-add-product main fieldset .form-radio-group {
+  display: flex;
+  gap: 25px;
+}
+.form-add-product footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+}
+.form-add-product footer button {
+  width: fit-content;
+  align-self: flex-end;
+}
+
+.table-users {
+  width: 100%;
+  border: 2px solid black;
+  border-collapse: collapse;
+}
+.table-users tbody tr:nth-child(odd) {
+  background-color: aliceblue;
+}
+.table-users tbody tr:first-child {
+  background-color: blanchedalmond;
+  border-bottom: 2px solid black;
+}
+.table-users tbody tr:nth-child(even) {
+  background-color: white;
+}
+.table-users tbody td {
+  border-left: 1px solid black;
+}
+.table-users tbody td:last-child {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+.table-users tbody td:last-child a:first-child {
+  margin-right: auto;
+}
+.table-users tbody td:last-child a:nth-child(2) {
+  margin: auto;
+}
+.table-users tbody td:last-child a:last-child {
+  margin-left: auto;
+}
+.table-users tbody td:last-child button {
+  height: fit-content;
+  color: black;
+}
+.table-users td {
+  height: 50px;
+  min-width: 50px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.form-add-user {
+  width: 100%;
+  height: fit-content;
+  background-color: aliceblue;
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.form-add-user header {
+  text-align: center;
+  font-size: 36px;
+}
+.form-add-user main {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 25px;
+}
+.form-add-user main .form-field-wrapper {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+.form-add-user main .form-field-wrapper .form-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 50px;
+}
+.form-add-user main .form-field-wrapper .form-group input {
+  width: 300px;
+  text-align: center;
+}
+.form-add-user main .form-field-wrapper .form-group input[type=number],
+.form-add-user main .form-field-wrapper .form-group input.monetary {
+  width: 100px;
+}
+.form-add-user main fieldset {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.form-add-user main fieldset .form-radio-group {
+  display: flex;
+  gap: 25px;
+}
+.form-add-user footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+}
+.form-add-user footer button {
+  width: fit-content;
+  align-self: flex-end;
+}
+
+.form-update-user {
+  width: 100%;
+  height: fit-content;
+  background-color: aliceblue;
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.form-update-user header {
+  text-align: center;
+  font-size: 36px;
+}
+.form-update-user main {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 25px;
+}
+.form-update-user main .form-field-wrapper {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+.form-update-user main .form-field-wrapper .form-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 50px;
+}
+.form-update-user main .form-field-wrapper .form-group input {
+  width: 300px;
+  text-align: center;
+}
+.form-update-user main .form-field-wrapper .form-group input[type=number],
+.form-update-user main .form-field-wrapper .form-group input.monetary {
+  width: 100px;
+}
+.form-update-user main fieldset {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.form-update-user main fieldset select {
+  width: fit-content;
+  padding: 5px 10px;
+  text-align: center;
+}
+.form-update-user footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+}
+.form-update-user footer button {
+  width: fit-content;
+  align-self: flex-end;
+}
+
+button,
+.button {
+  border-radius: 10px;
+  padding: 10px 20px;
+}
+
+.BTN-products {
+  background-color: orange;
+}
+
+.BTN-users {
+  background-color: blue;
+}
+
+.BTN-edit {
+  background-color: orange;
+}
+
+.BTN-order {
+  background-color: lightblue;
+}
+
+.BTN-disable {
+  background-color: salmon;
+}
+
+.BTN-enable {
+  background-color: lightgreen;
+}
+
+.BTN-validate {
+  background-color: green;
+}
+
+.BTN-logout {
+  background-color: red;
+}
+
+form {
+  width: 100%;
+  max-width: 1000px;
+  padding: 5px 30px 20px 30px;
+  gap: 25px;
+}
+form input,
+form select {
+  background-color: white;
+}
+form input [disabled],
+form select [disabled] {
+  background-color: none;
+}
+
+/*# sourceMappingURL=style.css.map */

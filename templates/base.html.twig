@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="/style/style.css">
+		<title>
+			{% block headTitle %}{% endblock %}
+		</title>
+	</head>
+	<body>
+		<header class="page-header">
+			<picture>
+				<img src="" alt="">
+			</picture>
+			<nav class='page-header__nav'>
+				<a href="/products/index">
+					<button class="BTN-products">
+						Produits
+					</button>
+				</a>
+				<a href="/users/index">
+					<button class="BTN-users">
+						Utilisateurs
+					</button>
+				</a>
+				<a href="/logout">
+					<button class="BTN-logout">
+						Déconnection
+					</button>
+				</a>
+			</nav>
+
+		</header>
+		<main class="page-main">
+			<header class="main-header"> {% block mainHeaderContent %}{% endblock %}
+				</header>
+				<section class="main-flash">
+					{% if session.message %}
+						<p>{{session.message}}</p>
+					{% endif %}
+				</section>
+
+				<section class="main-content"> {% block mainDisplay %}{% endblock %}
+					</section>
+				</main>
+			</body>
+		</html>
+		<script src="script/script.js"></script>

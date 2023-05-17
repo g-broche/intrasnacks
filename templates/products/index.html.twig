@@ -1,0 +1,73 @@
+{% extends "base.html.twig" %}
+
+{% block headTitle %}
+	{{pageTitle}}
+{% endblock %}
+
+{% block mainHeaderContent %}
+	<nav class='main-header__nav'>
+		<a href="/product/create">
+			<button class="BTN-products" id="BTN-addProduct">Ajout produit</button>
+		</a>
+		<a href="/products/resupply">
+			<button class="BTN-products" id="BTN-batchOrder">
+				Commande groupée
+			</button>
+		</a>
+	</nav>
+
+{% endblock %}
+
+{% block mainDisplay %}
+	<table class="table-products">
+		<tbody>
+			<tr>
+				<td>id</td>
+				<td>nom du produit</td>
+				<td>stock</td>
+				<td>coût en credit</td>
+				<td>prix fournisseur</td>
+				<td>Disponibilité</td>
+				<td>Actions</td>
+			</tr>
+			{% for product in productList %}
+				<tr {% if product['is_available']!=1 %} class="unavailable-product" {% endif %}>
+					<td>{{product['id']}}</td>
+					<td>{{product['name']}}</td>
+					<td>{{product['stock']}}</td>
+					<td>{{product['credit_cost']}}</td>
+					<td>{{product['price_restock']}}€</td>
+					<td>
+						{% if product['is_available']==1 %}
+							disponible
+						{% else %}
+							indisponible
+						{% endif %}
+					</td>
+					<td class="table-products__actions">
+						<a href="/product/edit?id={{product['id']}}">
+							<button class="BTN-edit">modifier</button>
+						</a>
+						<a href="/product/order?id={{product['id']}}">
+							<button class="BTN-order">commander</button>
+						</a>
+
+						{% if product['is_available']==1 %}
+							<a href="/product/disable?id={{product['id']}}">
+								<button class="BTN-disable">désactiver</button>
+							</a>
+						{% else %}
+							<a href="/product/enable?id={{product['id']}}">
+								<button class="BTN-enable">activer</button>
+							</a>
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
+
+{% block modalContent %}
+	<form id='product-form'></form>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html.twig" %}
+
+{% block headTitle %}
+	{{pageTitle}}
+{% endblock %}
+
+{% block mainHeaderContent %}
+	<nav class='main-header__nav'>
+		<button class="BTN-products" id="BTN-addProduct">Ajout produit</button>
+		<a href="/products/resupply">
+			<button class="BTN-products" id="BTN-batchOrder">
+				Commande groupée
+			</button>
+		</a>
+	</nav>
+
+{% endblock %}
+
+{% block mainDisplay %}
+	<form class="form-add-product" action="/product/create-new" method="post">
+		<header>
+			<h2>ajouter un produit</h2>
+		</header>
+		<main>
+			<div class="form-field-wrapper">
+				<div class="form-group">
+					<label for="product-name">Nom du produit</label>
+					<input type="text" id="product-name" name="name" placeholder="insérer le nom" required>
+				</div>
+
+				<div class="form-group">
+					<label for="stock">Quantité en stock</label>
+					<input type="number" id="stock" name="stock" value="0" min="0" max="100" required>
+				</div>
+				<div class="form-group">
+					<label for="credit-cost">Coût en crédit</label>
+					<input type="number" id="credit-cost" name="creditCost" value="10" min="1" max="50" required>
+				</div>
+				<div class="form-group">
+					<label for="price">Prix fournisseur</label>
+					<input type="text" class="monetary" id="price" name="price" placeholder="1.50" required>
+				</div>
+			</div>
+
+			<fieldset>
+				<legend>Ce produit est il disponible dés la création?</legend>
+				<div class="form-radio-group">
+					<input type="radio" id="radio-not-available" name="availability" value="0" required>
+					<label for="radio-not-available">Non</label>
+				</div>
+				<div class="form-radio-group">
+					<input type="radio" id="radio-available" name="availability" value="1" required>
+					<label for="radio-available">Oui</label>
+				</div>
+			</fieldset>
+		</main>
+
+		<footer>
+			<button class="BTN-validate" type="submit" name="create">Créer</button>
+		</footer>
+
+
+	</form>
+{% endblock %}

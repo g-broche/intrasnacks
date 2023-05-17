@@ -1,0 +1,46 @@
+{% extends "base.html.twig" %}
+
+{% block headTitle %}
+	{{pageTitle}}
+{% endblock %}
+
+{% block mainHeaderContent %}
+	<nav class='main-header__nav'>
+		<button class="BTN-products" id="BTN-addProduct">Ajout produit</button>
+		<a href="/products/resupply">
+			<button class="BTN-products" id="BTN-batchOrder">
+				Commande groupée
+			</button>
+		</a>
+	</nav>
+{% endblock %}
+
+{% block mainDisplay %}
+	<form class="form-update-product" action="/product/update" method="post">
+		<header>
+			<h2>Modifier un produit</h2>
+		</header>
+		<main>
+
+			<p>Nom du produit :
+				{{product['name']}}</p>
+
+			<p>Quantité en stock :
+				{{product['stock']}}</p>
+
+			<div>
+				<p>Coût actuel :
+					{{product['credit_cost']}}
+					credits</p>
+				<div>
+					<label for="field-cost">Nouveau coût :</label>
+					<input id="field-cost" name="newCost" type="number" min='1' max='50' size='1' value={{product['credit_cost']}}></div>
+			</div>
+		</main>
+		<footer>
+			<button class="BTN-validate" type="submit" name="modifyId" value={{product['id']}}>Modifier</button>
+		</footer>
+
+
+	</form>
+{% endblock %}

@@ -1,0 +1,41 @@
+@use '../../abstract/' as *;
+
+button,
+.button {
+    // width: fit-content;
+    // height: fit-content;
+    border-radius: 10px;
+    padding: $padding-button;
+}
+
+.BTN-products {
+    background-color: $color-background-buttonProducts;
+}
+
+.BTN-users {
+    background-color: $color-background-buttonUsers;
+}
+
+.BTN-edit {
+    background-color: orange;
+}
+
+.BTN-order {
+    background-color: lightblue;
+}
+
+.BTN-disable {
+    background-color: salmon;
+}
+
+.BTN-enable {
+    background-color: lightgreen;
+}
+
+.BTN-validate {
+    background-color: $color-background-buttonOk ;
+}
+
+.BTN-logout {
+    background-color: $color-background-buttonAbort;
+}

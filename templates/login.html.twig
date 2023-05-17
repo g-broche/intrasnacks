@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="style/style.css">
+		<title>
+			Connection
+		</title>
+	</head>
+	<body>
+		<header class="page-header">
+			<picture>
+				<img src="" alt="">
+			</picture>
+		</header>
+		<main class="page-main">
+			<section class="main-flash">
+				{% if session.message %}
+					<p>{{session.message}}</p>
+				{% endif %}
+			</section>
+			<section class="login-window">
+				<form class="login-window__form" action="/auth" method="post">
+					<h2>Identification</h2>
+					<div>
+						<label for="loginEmail">Email</label>
+						<input class="input-field" type="email" name="loginEmail" id="loginEmail"></div>
+					<div>
+						<label for="loginPassword">Mot de passe</label>
+						<input class="input-field" type="password" name="loginPassword" id="loginPassword"></div>
+					<input class="button BTN-validate" type="submit" value="Connection">
+				</form>
+			</section>
+		</main>
+	</body>
+</html>
