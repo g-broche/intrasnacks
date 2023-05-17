@@ -5,6 +5,7 @@ namespace src\controllers;
 use core\BaseController;
 use src\models\Resupply;
 use src\models\Product;
+use src\models\User;
 
 class ResupplyController extends BaseController
 {
@@ -22,11 +23,11 @@ class ResupplyController extends BaseController
         return $amount * $product->getInfos()['price_restock'];
     }
 
-    public function createSingleOrderReceipt(Product $product, int $amount)
+    public function createSingleOrderReceipt(int $agentId, Product $product, int $amount)
     {
 
         $cost = $this->calculateSingleOrderCost($product, $amount);
-        $resultInsResupply = $this->model->insertResupply(1, $amount, $cost);
+        $resultInsResupply = $this->model->insertResupply($agentId, $amount, $cost);
         $commandId = $this->model->getLastResupplyId();
         $resultInsResupplyLine = $this->model->insertResupplyLine($commandId, $product, $amount);
         return ($resultInsResupply && $resultInsResupplyLine);
@@ -35,12 +36,16 @@ class ResupplyController extends BaseController
     public function orderAProduct(int $productId, int $amount)
     {
         if (is_numeric($amount) && $amount > 0) {
+            $agent = new User;
+            $agent->setId($_SESSION['id']);
+            $agent->getOne();
             $product = new Product;
             $product->setId($productId);
             $product->getOne();
+
             if ($product->isResupplyAmountAllowed($amount)) {
                 $this->model->startTransaction();
-                $resultCreateReceipt = $this->createSingleOrderReceipt($product, $amount);
+                $resultCreateReceipt = $this->createSingleOrderReceipt($agent->getInfos()['id'], $product, $amount);
                 $resultIncreaseProduct = $product->increaseStockQuantity($amount);
                 if ($resultCreateReceipt && $resultIncreaseProduct) {
                     $this->model->commitTransaction();

@@ -81,6 +81,7 @@ class UserController extends BaseController
             $loggingUser->setLoggingUserInfos($email);
             if ($this->isUserAdmin($loggingUser)) {
                 $_SESSION['username'] = $loggingUser->getInfos()['first_name'];
+                $_SESSION['id'] = $loggingUser->getInfos()['id'];
                 echo "<script>window.location.href='/login'</script>";
             } else {
                 $_SESSION['message'] = "vous n'avez pas les droits";
