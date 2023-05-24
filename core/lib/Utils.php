@@ -12,7 +12,8 @@ final class Utils
         "noun" => "/^[\wÀ-ÖØ-öø-ÿ]+( [\wÀ-ÖØ-öø-ÿ]+)*$/u",
         "email" => "/^[\w\-\.]+@([\w-]+\.)+[\w-]{2,4}$/",
         "password" => "/^.+$/",
-        "phone" => "/^\d{10}$/"
+        "phone" => "/^\d{10}$/",
+        "monetaryBase" => "/^(-?(\d*(.\d{2})?)|(.\d{2})?)$/"
     ];
 
     private function __construct()

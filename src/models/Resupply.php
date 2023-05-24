@@ -23,14 +23,13 @@ class Resupply extends BaseModel
 
     public function insertResupply($agentId, $totalQuantity, $totalCost)
     {
-        $sql = "INSERT INTO " . $this->table . " (agent_id, total_cost, total_quantity) VALUES (:agentId, :cost, :quantity);
-        SELECT LAST_INSERT_ID()";
+        $sql = "INSERT INTO " . $this->table . " (agent_id, total_cost, total_quantity) VALUES (:agentId, :cost, :quantity)";
         $query = parent::$_connection->prepare($sql);
         $query->bindParam(':agentId', $agentId, PDO::PARAM_INT);
         $query->bindParam(':cost', $totalQuantity, PDO::PARAM_INT);
         $query->bindParam(':quantity', $totalCost, PDO::PARAM_INT);
         $query->execute();
-        return ($query->rowCount() > 0 ? true : false);
+        return ($query->rowCount() > 0);
     }
 
     public function getLastResupplyId()
@@ -53,6 +52,6 @@ class Resupply extends BaseModel
         $query->bindParam(':unit_price', $product->getInfos()['price_restock'], PDO::PARAM_INT);
         $query->bindParam(':cost', $cost, PDO::PARAM_STR);
         $query->execute();
-        return ($query->rowCount() > 0 ? true : false);
+        return ($query->rowCount() > 0);
     }
 }

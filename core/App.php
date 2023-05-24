@@ -38,8 +38,8 @@ class App
                     echo "error";
                 }
             }
+            /* ***** SITE ***** */
         } else {
-
             if (isset($_SESSION['username'])) {
                 /* base product list page*/
                 if ($uri == '/' || $uri == '/index') {
@@ -82,11 +82,12 @@ class App
                     } else {
                         header("location: /products/index");
                     }
+                    /* group ordering form (not currently implemented) */
                 } elseif ($uri == '/products/resupply') {
                     $controller = new ProductController();
                     $controller->resupply();
 
-                    /* update product in DB */
+                    /* disable product in DB */
                 } elseif ($uri == '/product/disable') {
                     if (isset($_GET['id'])) {
                         $controller = new ProductController();
@@ -94,6 +95,7 @@ class App
                     } else {
                         header("location: /products/index");
                     }
+                    /* enable product in DB */
                 } elseif ($uri == '/product/enable') {
                     if (isset($_GET['id'])) {
                         $controller = new ProductController();
@@ -124,14 +126,16 @@ class App
                     $controller->increaseUserSolde($_POST);
 
 
-                    /* ***** Logout and Login redirect if session true***** */
+                    /* ***** Logout and Login redirect if session true ***** */
                 } elseif ($uri == '/logout') {
                     session_destroy();
                     echo "<script>window.location.href='/login'</script>";
                 } elseif ($uri == '/login') {
                     header("location: /products/index");
+
+                    /* ***** page inexistante ***** */
                 } else {
-                    echo "derp";
+                    echo "page introuvable";
                 }
 
 

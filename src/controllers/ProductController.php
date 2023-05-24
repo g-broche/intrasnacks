@@ -46,7 +46,7 @@ class ProductController extends BaseController
         $this->model->setId($id);
         $this->model->getOne();
 
-        $this->render('products/order.html.twig', ['pageTitle' => $headerTitle, 'product' => $this->model->getInfos()]);
+        $this->render('products/order.html.twig', ['pageTitle' => $headerTitle, 'maxAmount' => $this->model::maxQuantity, 'product' => $this->model->getInfos()]);
     }
     public function resupply()
     {
@@ -129,6 +129,12 @@ class ProductController extends BaseController
     }
 
     public function apiGetProducts()
+    {
+        $this->model = new Product;
+        $this->model->getAll();
+        echo json_encode($this->model->getInfos());
+    }
+    public function apiSearchProducts(string $query)
     {
         $this->model = new Product;
         $this->model->getAll();

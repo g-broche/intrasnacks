@@ -36,6 +36,15 @@ class Product extends BaseModel
         }
     }
 
+    public function getByName(string $searchPart)
+    {
+        $sql = "SELECT * FROM " . $this->table . " WHERE name LIKE %:namePart%";
+        $query = self::$_connection->prepare($sql);
+        $query->bindParam(":namePart", $searchPart);
+        $query->execute();
+        $this->infos =  $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function setCreationInfos(string $name, int $stock, int $creditCost, $restockPrice, int $isAvailable): bool
     {
 
@@ -119,7 +128,7 @@ class Product extends BaseModel
         $query = parent::$_connection->prepare($sql);
         $query->bindParam(':newQuantity', $newQuantity, PDO::PARAM_INT);
         $query->execute();
-        return ($query->rowCount() > 0 ? true : false);
+        return ($query->rowCount() > 0);
     }
 
     public function setAvailability(int $newValue)

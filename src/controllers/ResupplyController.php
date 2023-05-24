@@ -49,10 +49,16 @@ class ResupplyController extends BaseController
                 $resultIncreaseProduct = $product->increaseStockQuantity($amount);
                 if ($resultCreateReceipt && $resultIncreaseProduct) {
                     $this->model->commitTransaction();
+                    $_SESSION['message'] = 'La commande a bien été effectuée';
                 } else {
                     $this->model->rollbackTransaction();
+                    $_SESSION['message'] = 'Erreur serveur';
                 }
+            } else {
+                $_SESSION['message'] = 'La quantité spécifiée causerait un stock supérieur au maximum autorisé (' . $product::maxQuantity . ')';
             }
+        } else {
+            $_SESSION['message'] = 'Les informations spécifiées sont invalides';
         }
     }
 }
