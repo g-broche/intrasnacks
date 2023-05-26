@@ -30,13 +30,8 @@ class App
             $controller = new ProductController();
             if (isset($_GET['id'])) {
                 $result = $controller->consume($_GET['id']);
-                if ($result['success']) {
-                    header('Content-Type: application/json');
-                    header("Access-Control-Allow-Origin: *");
-                    echo $result['infos'];
-                } else {
-                    echo "error";
-                }
+                header('Content-Type: application/json');
+                header("Access-Control-Allow-Origin: *");
             }
             /* ***** SITE ***** */
         } else {

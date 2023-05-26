@@ -150,9 +150,11 @@ class ProductController extends BaseController
             $successState = $this->model->substractUnits($quantity);
             if ($successState) {
                 $this->model->getOne();
-                return ['success' => true, 'infos' => json_encode($this->model->getInfos())];
+                echo json_encode(['success' => true, 'infos' => $this->model->getInfos()]);
+                return true;
             } else {
-                return ['success' => false, 'infos' => null];
+                echo json_encode(['success' => false, 'infos' => null]);
+                return false;
             }
         }
     }
