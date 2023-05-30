@@ -6,6 +6,7 @@ use core\lib\Utils;
 use src\controllers\ProductController;
 use src\controllers\ResupplyController;
 use src\controllers\UserController;
+use src\controllers\ServeUserController;
 
 class App
 {
@@ -22,16 +23,29 @@ class App
 
         /* ***** API ***** */
         if ($uri == '/api/products') {
-            $controller = new ProductController();
+            // if (isset($_GET['user-id'])) {
+            $_GET['user-id'] = 3;
+            $controller = new ServeUserController;
             header('Content-Type: application/json');
             header("Access-Control-Allow-Origin: *");
-            $controller->apiGetProducts();
+            echo $controller->apiGetProductsForUser($_GET['user-id']);
+            // }
         } elseif ($uri == '/api/product/consume') {
-            $controller = new ProductController();
+            $controller = new ProductController;
             if (isset($_GET['id'])) {
-                $result = $controller->consume($_GET['id']);
                 header('Content-Type: application/json');
                 header("Access-Control-Allow-Origin: *");
+                echo $controller->consume($_GET['id']);
+            }
+        } elseif ($uri == '/api/product/toggleFavorite') {
+            header("Access-Control-Allow-Origin: *");
+            header("Access-Control-Allow-Headers: *");
+            $json = file_get_contents('php://input');
+            $data = json_decode($json);
+            $controller = new ServeUserController;
+            if (isset($data->userToken) && isset($data->productId) && isset($data->isFavourite)) {
+                header('Content-Type: application/json');
+                echo $controller->toggleFavorite($data->userToken, $data->productId, $data->isFavourite);
             }
             /* ***** SITE ***** */
         } else {

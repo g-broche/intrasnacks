@@ -56,32 +56,31 @@ class UserController extends BaseController
         }
     }
 
-    private function validateUserLogin(User $user, string $email, string $password): bool
+    private function validateUserLogin(string $email, string $password): bool
     {
-        $resultPass = $user->getLoggingUserPassword($email);
+        $resultPass = $this->model->getLoggingUserPassword($email);
         if ($resultPass['mailExists']) {
             $hashedPassword = $resultPass['password'];
             return Utils::passwordVerify($password, $hashedPassword);
         } else {
-            die("C'EST NON ! MAUVAIS MAIL!");
             return false;
         }
     }
 
-    private function isUserAdmin(User $user): bool
+    private function isUserAdmin(): bool
     {
-        return ($user->getInfos()['is_admin'] == 1);
+        return ($this->model->getInfos()['is_admin'] == 1);
     }
 
     public function auth(string $email, string $password)
     {
-        $loggingUser = new User();
-        $loggingIsValid = $this->validateUserLogin($loggingUser, $email, $password);
+        $this->model;
+        $loggingIsValid = $this->validateUserLogin($email, $password);
         if ($loggingIsValid) {
-            $loggingUser->setLoggingUserInfos($email);
-            if ($this->isUserAdmin($loggingUser)) {
-                $_SESSION['username'] = $loggingUser->getInfos()['first_name'];
-                $_SESSION['id'] = $loggingUser->getInfos()['id'];
+            $this->model->setLoggingUserInfos($email);
+            if ($this->isUserAdmin()) {
+                $_SESSION['username'] = $this->model->getInfos()['first_name'];
+                $_SESSION['id'] = $this->model->getInfos()['id'];
                 echo "<script>window.location.href='/login'</script>";
             } else {
                 $_SESSION['message'] = "vous n'avez pas les droits";
@@ -104,9 +103,8 @@ class UserController extends BaseController
 
         $message = "";
         if ($this->areCreateInputsSet($inputs)) {
-            $newUser = new User;
             $insertSuccess = false;
-            $successState = $newUser->setCreationInfos(
+            $successState = $this->model->setCreationInfos(
                 $inputs['lastName'],
                 $inputs['firstName'],
                 $inputs['email'],
@@ -118,7 +116,7 @@ class UserController extends BaseController
 
             if ($successState) {
 
-                $insertSuccess = $newUser->createUser();
+                $insertSuccess = $this->model->createUser();
                 $message = ($insertSuccess ? "L'utilisateur " . $inputs['firstName'] . " " . $inputs['lastName'] . " a bien été ajouté !" : "erreur lors de l'insertion");
             } else {
                 $message = "erreur : des infos du formulaires sont érronées";
@@ -158,5 +156,19 @@ class UserController extends BaseController
         $_SESSION['message'] = "erreur, le formulaire est invalide.";
         header("location: /user/edit?id=" . $array['id']);
         return;
+    }
+
+    /* ***** API RELATED ***** */
+
+    public function giveClientToken(string $email, string $password)
+    {
+        $response = null;
+        $loggingIsValid = $this->validateUserLogin($email, $password);
+        if ($loggingIsValid) {
+            $this->model->giveClientToken($email);
+            $response = ['success' => true, 'clientToken' => $this->model->getInfos()['token']];
+        } else {
+            $response = ['success' => false, 'clientToken' => null];
+        }
     }
 }

@@ -132,4 +132,63 @@ class User extends BaseModel
         }
         return $successState;
     }
+
+    public function giveClientToken($email)
+    {
+        $sql = "SELECT token FROM " . $this->table . " WHERE email = :inputedMail";
+        $query = self::$_connection->prepare($sql);
+        $query->bindParam(':inputedMail', $email, PDO::PARAM_STR);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        if ($result) {
+            $this->infos = $result;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getUserIdFromToken($token)
+    {
+        $sql = "SELECT id FROM " . $this->table . " WHERE token=:token";
+        $query = self::$_connection->prepare($sql);
+        $query->bindParam(':token', $token, PDO::PARAM_STR);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        if ($result) {
+            $this->id = $result['id'];
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function removeFavourite(int $productId)
+    {
+        $sql = "DELETE FROM `favourite_list` WHERE user_id=:userId AND product_id=:productId";
+        $query = self::$_connection->prepare($sql);
+        $query->bindParam(':userId', $this->id, PDO::PARAM_INT);
+        $query->bindParam(':productId', $productId, PDO::PARAM_INT);
+        $query->execute();
+        if ($query->rowCount() > 0) {
+            $successState = true;
+        } else {
+            $successState = false;
+        }
+        return $successState;
+    }
+    public function addFavourite(int $productId)
+    {
+        $sql = "INSERT INTO `favourite_list` (user_id, product_id) VALUES (:userId, :productId)";
+        $query = self::$_connection->prepare($sql);
+        $query->bindParam(':userId', $this->id, PDO::PARAM_INT);
+        $query->bindParam(':productId', $productId, PDO::PARAM_INT);
+        $query->execute();
+        if ($query->rowCount() > 0) {
+            $successState = true;
+        } else {
+            $successState = false;
+        }
+        return $successState;
+    }
 }

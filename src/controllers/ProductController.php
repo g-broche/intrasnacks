@@ -4,6 +4,7 @@ namespace src\controllers;
 
 use core\BaseController;
 use src\models\Product;
+use src\models\ServeUser;
 
 class ProductController extends BaseController
 {
@@ -128,40 +129,27 @@ class ProductController extends BaseController
         }
     }
 
-    public function apiGetProducts()
-    {
-        $this->model = new Product;
-        $this->model->getAll();
-        echo json_encode($this->model->getInfos());
-    }
+    /* ***** API RELATED ***** */
+
     public function apiSearchProducts(string $query)
     {
-        $this->model = new Product;
+
         $this->model->getAll();
-        echo json_encode($this->model->getInfos());
+        return json_encode($this->model->getInfos());
     }
 
-    public function consume($id, $quantity = 1)
+    public function consume(int $id, int $quantity = 1)
     {
         if ($quantity >= 1) {
-            $this->model = new Product;
             $this->model->setId($id);
             $successState = false;
             $successState = $this->model->substractUnits($quantity);
             if ($successState) {
                 $this->model->getOne();
-                echo json_encode(['success' => true, 'infos' => $this->model->getInfos()]);
-                return true;
+                return json_encode(['success' => true, 'infos' => $this->model->getInfos()]);
             } else {
-                echo json_encode(['success' => false, 'infos' => null]);
-                return false;
+                return json_encode(['success' => false, 'infos' => null]);
             }
         }
     }
 }
-
-
-// Créez deux nouvelles routes :
-// 1. /api/products qui affiche tous les produits sous forme de json
-// 2. /api/products/consume qui prend un paramètre GET (id) et qui va retirer un stock au produit défini par cet id ;
-//  cette route "renvoie" le produit sous forme de JSON avec sa quantité à jour
