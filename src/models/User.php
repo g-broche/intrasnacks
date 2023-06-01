@@ -133,6 +133,21 @@ class User extends BaseModel
         return $successState;
     }
 
+    public function getSolde()
+    {
+        $successState = false;
+        $sql = "SELECT solde FROM " . $this->table . " WHERE id = :userId";
+        $query = parent::$_connection->prepare($sql);
+        $query->bindParam(':userId', $this->id, PDO::PARAM_INT);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC)["solde"];
+        if ($result) {
+            return ["success" => true, "newSolde" => $result];
+        } else {
+            return ["success" => false, "newSolde" => null];
+        }
+    }
+
     public function giveClientToken($email)
     {
         $sql = "SELECT token FROM " . $this->table . " WHERE email = :inputedMail";

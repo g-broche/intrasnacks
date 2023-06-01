@@ -74,7 +74,6 @@ class UserController extends BaseController
 
     public function auth(string $email, string $password)
     {
-        $this->model;
         $loggingIsValid = $this->validateUserLogin($email, $password);
         if ($loggingIsValid) {
             $this->model->setLoggingUserInfos($email);
@@ -170,5 +169,19 @@ class UserController extends BaseController
         } else {
             $response = ['success' => false, 'clientToken' => null];
         }
+    }
+
+    public function getApiClientInfo(string $email, string $password)
+    {
+
+        $loggingIsValid = $this->validateUserLogin($email, $password);
+        if ($loggingIsValid) {
+            $this->model->setLoggingUserInfos($email);
+            $clientInfos = ["firstName" => $this->model->getInfos()["first_name"], "lastName" => $this->model->getInfos()["last_name"], "solde" => $this->model->getInfos()["solde"], "token" => $this->model->getInfos()["token"]];
+            $response = json_encode(["success" => true, "clientInfos" => $clientInfos]);
+        } else {
+            $response = json_encode(["success" => false, "error" => "les informations envoyées sont erronnées"]);
+        }
+        return $response;
     }
 }

@@ -59,8 +59,9 @@ class BaseModel
 
     public function getOne()
     {
-        $sql = "SELECT * FROM " . $this->table . " WHERE id=" . $this->id;
+        $sql = "SELECT * FROM " . $this->table . " WHERE id=:id";
         $query = self::$_connection->prepare($sql);
+        $query->bindParam(':id', $this->id, PDO::PARAM_INT);
         $query->execute();
         $this->infos = $query->fetch(PDO::FETCH_ASSOC);
     }

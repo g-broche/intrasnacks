@@ -9,6 +9,7 @@ use PDO;
 class Product extends BaseModel
 {
     const maxCreditCost = 50;
+    const maxOrderAmount = 3;
     const maxQuantity = 100;
     private $stockDBName = "stock";
     private $availabilityDBName = "is_available";
@@ -27,14 +28,14 @@ class Product extends BaseModel
         $this->getConnection();
     }
 
-    public function setId($id)
-    {
-        if (is_numeric($id) && $id > 0) {
-            $this->id = $id;
-        } else {
-            return false;
-        }
-    }
+    // public function setId($id)
+    // {
+    //     if (is_numeric($id) && $id > 0) {
+    //         $this->id = $id;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
     public function getByName(string $searchPart)
     {
@@ -95,6 +96,18 @@ class Product extends BaseModel
             return (self::maxQuantity >= ($this->getStock() + $amount));
         } else {
             return false;
+        }
+    }
+
+    public function isOrderedAmountAllowed($amount)
+    {
+        if ($this->infos != null) {
+            $isInputValid = Utils::isNumberValidInt($amount, 1, self::maxOrderAmount);
+            if ($isInputValid) {
+                return ($this->getStock() > 0 && $this->getStock() > $amount);
+            } else {
+                return false;
+            }
         }
     }
 

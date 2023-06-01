@@ -26,7 +26,6 @@ class ServeUserController extends BaseController
 
     public function toggleFavorite(string $userToken, int $productId, bool $isNowFavourite)
     {
-
         $userExist = $this->userModel->getUserIdFromToken($userToken);
         if ($userExist) {
             $this->productModel->setId($productId);

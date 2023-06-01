@@ -27,7 +27,7 @@ class Resupply extends BaseModel
         $query = parent::$_connection->prepare($sql);
         $query->bindParam(':agentId', $agentId, PDO::PARAM_INT);
         $query->bindParam(':cost', $totalQuantity, PDO::PARAM_INT);
-        $query->bindParam(':quantity', $totalCost, PDO::PARAM_INT);
+        $query->bindParam(':quantity', $totalCost, PDO::PARAM_STR);
         $query->execute();
         return ($query->rowCount() > 0);
     }
@@ -49,7 +49,7 @@ class Resupply extends BaseModel
         $query->bindParam(':resupplyId', $resupplyId, PDO::PARAM_INT);
         $query->bindParam(':productId', $product->getInfos()['id'], PDO::PARAM_INT);
         $query->bindParam(':quantity', $quantity, PDO::PARAM_INT);
-        $query->bindParam(':unit_price', $product->getInfos()['price_restock'], PDO::PARAM_INT);
+        $query->bindParam(':unit_price', $product->getInfos()['price_restock'], PDO::PARAM_STR);
         $query->bindParam(':cost', $cost, PDO::PARAM_STR);
         $query->execute();
         return ($query->rowCount() > 0);

@@ -5,8 +5,11 @@ namespace core;
 use core\lib\Utils;
 use src\controllers\ProductController;
 use src\controllers\ResupplyController;
+use src\controllers\SaleController;
 use src\controllers\UserController;
 use src\controllers\ServeUserController;
+
+/* Implementation of a proper authentification for API using JWT will be in a next study project */
 
 class App
 {
@@ -17,25 +20,36 @@ class App
     public function run()
     {
 
-        // var_dump($_SESSION);
-        // die;
         $uri = strtok($_SERVER['REQUEST_URI'], '?');
 
         /* ***** API ***** */
-        if ($uri == '/api/products') {
-            // if (isset($_GET['user-id'])) {
+        if ($uri == '/api/login') {
+            $controller = new UserController;
+            header("Access-Control-Allow-Origin: *");
+            header("Access-Control-Allow-Headers: *");
+            header('Content-Type: application/json');
+            $json = file_get_contents('php://input');
+            $data = json_decode($json);
+            if (isset($data->inputedMail) && isset($data->inputedPass)) {
+                echo $controller->getApiClientInfo($data->inputedMail, $data->inputedPass);
+            } else {
+                echo json_encode(["success" => false, "error" => "Il manque des informations"]);
+            }
+        } elseif ($uri == '/api/products') {
             $_GET['user-id'] = 3;
             $controller = new ServeUserController;
             header('Content-Type: application/json');
             header("Access-Control-Allow-Origin: *");
             echo $controller->apiGetProductsForUser($_GET['user-id']);
-            // }
         } elseif ($uri == '/api/product/consume') {
-            $controller = new ProductController;
-            if (isset($_GET['id'])) {
-                header('Content-Type: application/json');
-                header("Access-Control-Allow-Origin: *");
-                echo $controller->consume($_GET['id']);
+            header("Access-Control-Allow-Origin: *");
+            header("Access-Control-Allow-Headers: *");
+            header('Content-Type: application/json');
+            $json = file_get_contents('php://input');
+            $data = json_decode($json);
+            $controller = new SaleController;
+            if (isset($data->userToken) && isset($data->productId)) {
+                echo $controller->orderAProduct($data->userToken, $data->productId, $amount = 1);
             }
         } elseif ($uri == '/api/product/toggleFavorite') {
             header("Access-Control-Allow-Origin: *");

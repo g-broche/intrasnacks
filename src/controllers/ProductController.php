@@ -137,19 +137,4 @@ class ProductController extends BaseController
         $this->model->getAll();
         return json_encode($this->model->getInfos());
     }
-
-    public function consume(int $id, int $quantity = 1)
-    {
-        if ($quantity >= 1) {
-            $this->model->setId($id);
-            $successState = false;
-            $successState = $this->model->substractUnits($quantity);
-            if ($successState) {
-                $this->model->getOne();
-                return json_encode(['success' => true, 'infos' => $this->model->getInfos()]);
-            } else {
-                return json_encode(['success' => false, 'infos' => null]);
-            }
-        }
-    }
 }
