@@ -67,7 +67,6 @@ class Sale extends BaseModel
         $query->bindParam(':userId', $userId, PDO::PARAM_INT);
         $query->execute();
         $result = $query->fetch(PDO::FETCH_ASSOC);
-        die();
         if ($result) {
             return ['success' => true, 'infos' => $result];
         } else {

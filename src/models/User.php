@@ -120,8 +120,24 @@ class User extends BaseModel
     public function increaseSolde($amount)
     {
         $successState = false;
-        $sql = "UPDATE " . $this->table . " SET " . $this->soldNameDB . " = (" . $this->soldNameDB . " + :amount)
+        $sql = "UPDATE " . $this->table . " SET " . $this->soldNameDB . " = (" . $this->soldNameDB . " - :amount)
         WHERE id= " . $this->id . " and " . $this->soldNameDB . " + :amount <= " . self::maxCreditAmount;
+        $query = parent::$_connection->prepare($sql);
+        $query->bindParam(':amount', $amount, PDO::PARAM_INT);
+        $query->execute();
+        if ($query->rowCount() > 0) {
+            $successState = true;
+        } else {
+            $successState = false;
+        }
+        return $successState;
+    }
+
+    public function decreaseSolde($amount)
+    {
+        $successState = false;
+        $sql = "UPDATE " . $this->table . " SET " . $this->soldNameDB . " = (" . $this->soldNameDB . " - :amount)
+        WHERE id= " . $this->id . " and " . $this->soldNameDB . " - :amount >= 0";
         $query = parent::$_connection->prepare($sql);
         $query->bindParam(':amount', $amount, PDO::PARAM_INT);
         $query->execute();

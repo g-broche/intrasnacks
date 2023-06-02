@@ -104,7 +104,7 @@ class Product extends BaseModel
         if ($this->infos != null) {
             $isInputValid = Utils::isNumberValidInt($amount, 1, self::maxOrderAmount);
             if ($isInputValid) {
-                return ($this->getStock() > 0 && $this->getStock() > $amount);
+                return ($this->getStock() > 0 && $this->getStock() >= $amount);
             } else {
                 return false;
             }

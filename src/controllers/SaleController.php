@@ -24,10 +24,8 @@ class SaleController extends BaseController
         return $cost;
     }
 
-    private function createSingleSaleReceipt(User $user, Product $product, int $amount): array
+    private function createSingleSaleReceipt(User $user, Product $product, int $amount, int $cost): array
     {
-
-        $cost = $this->calculateSingleSaleCost($product, $amount);
         $resultInsSale = $this->model->insertSale($user->getId(), $amount, $cost);
         $saleId = $this->model->getLastSaleId();
         $this->model->setId($saleId);
@@ -37,8 +35,6 @@ class SaleController extends BaseController
 
     private function compileSaleReturn($data)
     {
-        var_dump($data);
-        die();
         $parsedData = [
             'product' => [
                 'id' => $data['productId'],
@@ -58,6 +54,7 @@ class SaleController extends BaseController
 
     public function orderAProduct(string $userToken, int $productId, int $amount)
     {
+
         if (is_numeric($amount) && $amount > 0) {
             $client = new User;
             $isClientFound = $client->getUserIdFromToken($userToken);
@@ -65,24 +62,33 @@ class SaleController extends BaseController
             $product->setId($productId);
             $product->getOne();
             if ($isClientFound) {
-                if ($product->isOrderedAmountAllowed($amount)) {
-                    $this->model->startTransaction();
-                    $resultCreateSale = $this->createSingleSaleReceipt($client, $product, $amount);
-                    $resultConsumeProduct = $product->substractUnits($amount);
-                    if ($resultCreateSale && $resultConsumeProduct) {
-                        $this->model->commitTransaction();
-                        $infosToParse = $this->model->getSaleReturnData($this->model->getId(), $client->getId())['infos'];
-                        $parsedInfos = $this->compileSaleReturn($infosToParse);
-                        return json_encode(['success' => true, 'infos' => $parsedInfos]);
+                $cost = $this->calculateSingleSaleCost($product, $amount);
+                $this->model->startTransaction();
+                $resultDecreaseSolde = $client->decreaseSolde($cost);
+                if ($resultDecreaseSolde) {
+                    if ($product->isOrderedAmountAllowed($amount)) {
+                        $resultCreateSale = $this->createSingleSaleReceipt($client, $product, $amount, $cost);
+                        $resultConsumeProduct = $product->substractUnits($amount);
+                        if ($resultCreateSale && $resultConsumeProduct) {
+                            $this->model->commitTransaction();
+                            $infosToParse = $this->model->getSaleReturnData($this->model->getId(), $client->getId())['infos'];
+                            $parsedInfos = $this->compileSaleReturn($infosToParse);
+                            return json_encode(['success' => true, 'infos' => $parsedInfos]);
+                        } else {;
+                            $this->model->rollbackTransaction();
+                            return json_encode(['success' => false, 'infos' => 'erreur lors de la requête serveur']);
+                        }
                     } else {
-                        return json_encode(['success' => false, 'infos' => 'erreur lors de la requête serveur']);
+                        $this->model->rollbackTransaction();
+                        return json_encode(['success' => false, 'infos' => 'erreur : pas assez de stock ou le maximum autorisé pour un produit(' . $product::maxQuantity . ') est dépassé']);
                     }
                 } else {
-                    return json_encode(['success' => false, 'infos' => 'erreur le maximum autorisé pour un produit est ' . $product::maxQuantity]);
+                    $this->model->rollbackTransaction();
+                    return json_encode(['success' => false, 'infos' => 'le solde actuel de l\'utilisateur ne permet pas cet achat.']);
                 }
             }
         } else {
-            return json_encode(['success' => false, 'infos' => 'erreur utilisateur indéterminé']);
+            return json_encode(['success' => false, 'infos' => 'erreur utilisateur indéterminé.']);
         }
     }
 }
