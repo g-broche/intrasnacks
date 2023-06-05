@@ -191,8 +191,7 @@ class Product extends BaseModel
     {
         $sql = "SELECT TP.*, CASE WHEN TF.user_id IS NOT NULL THEN 1 ELSE 0 END AS is_favourite
         FROM products TP 
-        LEFT JOIN  favourite_list TF ON TP.id = TF.product_id 
-        LEFT JOIN users TU ON TF.user_id = TU.id AND TU.id=:userId";
+        LEFT JOIN  favourite_list TF ON TP.id = TF.product_id AND TF.user_id=:userId";
         $query = self::$_connection->prepare($sql);
         $query->bindParam(':userId', $userId, PDO::PARAM_INT);
         $query->execute();
