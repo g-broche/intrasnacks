@@ -61,6 +61,16 @@ class App
                 header('Content-Type: application/json');
                 echo $controller->toggleFavorite($data->userToken, $data->productId, $data->isFavourite);
             }
+        } elseif ($uri == '/api/history') {
+            header("Access-Control-Allow-Origin: *");
+            header("Access-Control-Allow-Headers: *");
+            header('Content-Type: application/json');
+            $json = file_get_contents('php://input');
+            $data = json_decode($json);
+            $controller = new ServeUserController;
+            if (isset($data->userToken)) {
+                echo $controller->getUserHistory($data->userToken);
+            }
             /* ***** SITE ***** */
         } else {
             if (isset($_SESSION['username'])) {

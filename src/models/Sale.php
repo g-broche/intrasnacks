@@ -73,4 +73,21 @@ class Sale extends BaseModel
             return ['success' => false, 'infos' => null];
         }
     }
+
+    public function getHistory($userId): array
+    {
+        $sql = "SELECT TS.id, TS.date, TS.total_quantity, TS.total_cost, TP.name, TSR.quantity, TSR.unit_cost, TSR.cost
+        FROM sales TS, sale_rows TSR, products TP 
+        WHERE TS.id=TSR.sale_id AND TSR.product_id=TP.id AND TS.user_id = :userId
+        ORDER BY TS.id";
+        $query = self::$_connection->prepare($sql);
+        $query->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $query->execute();
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        if ($result) {
+            return ['success' => true, 'infos' => $result];
+        } else {
+            return ['success' => false, 'infos' => null];
+        }
+    }
 }

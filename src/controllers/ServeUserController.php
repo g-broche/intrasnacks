@@ -5,6 +5,7 @@ namespace src\controllers;
 use core\BaseController;
 use src\models\Product;
 use src\models\User;
+use src\models\Sale;
 
 class ServeUserController extends BaseController
 {
@@ -40,4 +41,59 @@ class ServeUserController extends BaseController
             return json_encode(['success' => false, 'message' => 'jeton de connection invalide, merci de vous reconnecter']);
         }
     }
+
+    private function formatHistoryData(array $data)
+    {
+        $sortedArray = [];
+        $lastId = null;
+        foreach ($data as $rowEntry) {
+            if ($rowEntry['id'] != $lastId) {
+                $lastId = $rowEntry['id'];
+                $sortedArray[$rowEntry['id']] = ['summary' => $this->getSaleGlobalSummary($rowEntry), 'content' => []];
+                array_push($sortedArray[$rowEntry['id']]['content'], $this->getSaleRow($rowEntry));
+            } else {
+                array_push($sortedArray[$rowEntry['id']]['content'], $this->getSaleRow($rowEntry));
+            }
+        }
+        return $sortedArray;
+    }
+
+    private function getSaleGlobalSummary(array $rawRow)
+    {
+        return [
+            'date' => $rawRow['date'],
+            'total_quantity' => $rawRow['total_quantity'],
+            'total_cost' => $rawRow['total_cost'],
+        ];
+    }
+
+    private function getSaleRow(array $rawRow)
+    {
+        return [
+            'name' => $rawRow['name'],
+            'quantity' => $rawRow['quantity'],
+            'unit_cost' => $rawRow['unit_cost'],
+            'cost' => $rawRow['cost'],
+        ];
+    }
+
+    public function getUserHistory(string $userToken)
+    {
+        $data = null;
+        $userExist = $this->userModel->getUserIdFromToken($userToken);
+        if ($userExist) {
+            $sale = new Sale;
+            $rawData = $sale->getHistory($this->userModel->getId());
+            if ($rawData) {
+                $data = $this->formatHistoryData($rawData['infos']);
+                return json_encode(['success' => true, 'infos' => $data]);
+            } else {
+                return json_encode(['success' => false, 'error' => 'aucun historique pour cet utilisateur ou une erreur a eu lieu']);
+            }
+        } else {
+            return json_encode(['success' => false, 'error' => 'erreur serveur']);
+        }
+    }
 }
+
+// return json_encode(['success' => false, 'message' => 'jeton de connection invalide, merci de vous reconnecter']);
