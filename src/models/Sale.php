@@ -76,7 +76,7 @@ class Sale extends BaseModel
 
     public function getHistory($userId): array
     {
-        $sql = "SELECT TS.id, TS.date, TS.total_quantity, TS.total_cost, TP.name, TSR.quantity, TSR.unit_cost, TSR.cost
+        $sql = "SELECT TS.id, TS.date, TS.total_quantity, TS.total_cost, TP.name, TP.image_name, TSR.quantity, TSR.unit_cost, TSR.cost
         FROM sales TS, sale_rows TSR, products TP 
         WHERE TS.id=TSR.sale_id AND TSR.product_id=TP.id AND TS.user_id = :userId
         ORDER BY TS.id";

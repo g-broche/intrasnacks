@@ -46,13 +46,15 @@ class ServeUserController extends BaseController
     {
         $sortedArray = [];
         $lastId = null;
+        $index = 0;
         foreach ($data as $rowEntry) {
             if ($rowEntry['id'] != $lastId) {
+                $index++;
                 $lastId = $rowEntry['id'];
-                $sortedArray[$rowEntry['id']] = ['summary' => $this->getSaleGlobalSummary($rowEntry), 'content' => []];
-                array_push($sortedArray[$rowEntry['id']]['content'], $this->getSaleRow($rowEntry));
+                $sortedArray[$index] = ['summary' => $this->getSaleGlobalSummary($rowEntry), 'content' => []];
+                array_push($sortedArray[$index]['content'], $this->getSaleRow($rowEntry));
             } else {
-                array_push($sortedArray[$rowEntry['id']]['content'], $this->getSaleRow($rowEntry));
+                array_push($sortedArray[$index]['content'], $this->getSaleRow($rowEntry));
             }
         }
         return $sortedArray;
@@ -61,6 +63,7 @@ class ServeUserController extends BaseController
     private function getSaleGlobalSummary(array $rawRow)
     {
         return [
+            'id' => $rawRow['id'],
             'date' => $rawRow['date'],
             'total_quantity' => $rawRow['total_quantity'],
             'total_cost' => $rawRow['total_cost'],
@@ -74,6 +77,7 @@ class ServeUserController extends BaseController
             'quantity' => $rawRow['quantity'],
             'unit_cost' => $rawRow['unit_cost'],
             'cost' => $rawRow['cost'],
+            'image_name' => $rawRow['image_name']
         ];
     }
 
@@ -95,5 +99,3 @@ class ServeUserController extends BaseController
         }
     }
 }
-
-// return json_encode(['success' => false, 'message' => 'jeton de connection invalide, merci de vous reconnecter']);
